@@ -72,7 +72,6 @@ module Indicators
       lp = low[0]
       for i in (2..length)
         reverse = false
-        puts "bull: #{bull}, reverse: #{reverse}, psar[i - 1]: #{psar[i - 1]}, af: #{af}, hp: #{hp}, lp: #{lp}, ep: #{ep}"
         if bull
           psar[i] = psar[i - 1] + af * (hp - psar[i - 1])
           if low[i] < psar[i]
@@ -118,6 +117,7 @@ module Indicators
           end
           psarbear[i] = psar[i]
         end
+        puts "i: #{i}, bull: #{bull}, reverse: #{reverse}, psar[i - 1]: #{psar[i - 1]}, psar[i]: #{psar[i]}, af: #{af}, hp: #{hp}, lp: #{lp}, ep: #{ep}"
       end
       return {"dates":dates, "high":high, "low":low, "close":close, "psar":psar, "psarbear":psarbear, "psarbull":psarbull}
     end

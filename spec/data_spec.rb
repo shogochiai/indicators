@@ -21,9 +21,8 @@ describe Indicators::Data do
 			end
 			it "is a hash" do
 				expect { 
-                                    arr = []
-                                    100.times { arr.push({:date=>"2012-01-04",:open=>(2410.00+rand(100)),:high=>(2414.68+rand(100)), :low=>(2409.28+rand(100)), :close=>(2413.44+rand(100)), :volume=>"9286500", :adj_close=>(2411.67+rand(100))}) }
-                                    Indicators::Data.new(arr)
+                                    arr = Array.new(100).each_with_index.map { |x,i| {:date=>(Date.today+i).to_s,:open=>(2000+rand(500)*(-1)**[0,1].sample),:high=>(2500+rand(500)*(-1)**[0,1].sample), :low=>(1500+rand(500)*(-1)**[0,1].sample), :close=>(2000+rand(500)*(-1)**[0,1].sample), :volume=>"9286500", :adj_close=>2000+rand(500)*(-1)**[0,1].sample} }
+                                    Indicators::Data.new arr
                                 }.not_to raise_error
 			end
 
@@ -32,9 +31,8 @@ describe Indicators::Data do
 
 	describe ".calc" do
 		before :all do
-                        arr = []
-                        100.times { arr.push({:date=>"2012-01-04",:open=>(2410.00+rand(100)),:high=>(2414.68+rand(100)), :low=>(2409.28+rand(100)), :close=>(2413.44+rand(100)), :volume=>"9286500", :adj_close=>(2411.67+rand(100))}) }
-			@my_data = Indicators::Data.new(arr)
+                        arr = Array.new(100).each_with_index.map { |x,i| {:date=>(Date.today+i).to_s,:open=>(2000+rand(500)*(-1)**[0,1].sample),:high=>(2500+rand(500)*(-1)**[0,1].sample), :low=>(1500+rand(500)*(-1)**[0,1].sample), :close=>(2000+rand(500)*(-1)**[0,1].sample), :volume=>"9286500", :adj_close=>2000+rand(500)*(-1)**[0,1].sample} }
+			@my_data = Indicators::Data.new arr
 		end
 
 		context "should raise an exception if parameter" do
