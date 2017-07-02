@@ -31,7 +31,10 @@ describe Indicators::Data do
 
 	describe ".calc" do
 		before :all do
-			@my_data = Indicators::Data.new(Securities::Stock.new(:symbol => 'AAPL', :start_date => '2012-08-01', :end_date => '2012-08-20', :type => :daily).output)
+                        arr = []
+	                item = {:date=>"2012-01-04",:open=>"410.00",:high=>"414.68", :low=>"409.28", :close=>"413.44", :volume=>"9286500", :adj_close=>"411.67"}
+                        100.times { arr.push(item) }
+			@my_data = Indicators::Data.new(arr)
 		end
 
 		context "should raise an exception if parameter" do
