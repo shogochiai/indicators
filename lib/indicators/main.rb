@@ -33,6 +33,7 @@ module Indicators
         @params << Indicators::Helper.get_parameters(all_params, 2, 3)
       when :psar
         @params = Array.new
+        @params << Indicators::Helper.get_parameters(all_params)
       end
 
       # This is a Securities gem hash.

@@ -67,6 +67,9 @@ describe Indicators::Data do
 			it "good STO params are specified" do
 				expect { @my_data.calc(:type => :sto, :params => [3, 5, 4]) }.not_to raise_error
 			end
+			it "good PSAR params are specified" do
+				expect { @my_data.calc(:type => :psar, :params => [0.02, 0.2]) }.not_to raise_error
+			end
 		end
 	end
 

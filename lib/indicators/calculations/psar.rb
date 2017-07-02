@@ -53,12 +53,13 @@ module Indicators
   class Psar
     # Input: Price array of that period
     # Returns: []
-    def self.calculate barsdata, iaf = 0.02, maxaf = 0.2
-      length = barsdata.length
-      dates = barsdata[:date]
-      high = barsdata[:high]
-      low = barsdata[:low]
-      close = barsdata[:close]
+    def self.calculate data, parameters
+      iaf, maxaf = parameters[0], parameters[1]
+      length = data.length
+      dates = data[:date]
+      high = data[:high]
+      low = data[:low]
+      close = data[:close]
       psar = close[0..close.length]
       
       # "bull" swing its horn to above, then uptrend symbol, "bear" swing its nail to below, then downtrend symbol.
