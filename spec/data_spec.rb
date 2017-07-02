@@ -12,9 +12,6 @@ describe Indicators::Data do
 		  it "is not an array" do
 		  	expect { Indicators::Data.new('some string') }.to raise_error(Indicators::Data::DataException, /Alien data. Given data must be an array/)
 		  end
-		  it "contains dividends hash from Securities gem" do
-		  	expect { Indicators::Data.new(Securities::Stock.new(:symbol => 'AAPL', :start_date => '2012-08-01', :end_date => '2012-08-10', :type => :dividends).output) }.to raise_error('Cannot use dividends values for technical analysis.')
-			end
 		end
 
 		context "should not raise an exception if parameter" do
@@ -23,7 +20,12 @@ describe Indicators::Data do
 				expect { Indicators::Data.new([1, 2, 3]) }.not_to raise_error
 			end
 			it "is a hash" do
-				expect { Indicators::Data.new(Securities::Stock.new(:symbol => 'AAPL', :start_date => '2012-08-01', :end_date => '2012-08-03', :type => :daily).output) }.not_to raise_error
+				expect { 
+                                    arr = []
+	                            item = {:date=>"2012-01-04",:open=>"410.00",:high=>"414.68", :low=>"409.28", :close=>"413.44", :volume=>"9286500", :adj_close=>"411.67"}
+                                    100.times { arr.push(item) }
+                                    Indicators::Data.new(arr)
+                                }.not_to raise_error
 			end
 
 		end
