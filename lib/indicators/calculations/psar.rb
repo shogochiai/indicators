@@ -51,19 +51,73 @@
 
 module Indicators
   class Psar
-    # Input 
-    # Returns []
-    def self.calculate data, parameters
-      output = Array.new
-      # initialize SAR
-      # subscription start
-      # new trade coming
-      #   define rising_faling_flag by diff
-      #   if condition rising_faling_flag
-      #   Use "+ Prior AF(Prior EP - Prior SAR)" or "- Prior AF(Prior SAR - Prior EP)"
+    # Input: Price array of that period
+    # Returns: []
+    def self.calculate barsdata, iaf = 0.02, maxaf = 0.2
+      length = barsdata.length
+      dates = barsdata[:date]
+      high = barsdata[:high]
+      low = barsdata[:low]
+      close = barsdata[:close]
+      psar = close[0..close.length]
 
-      return output
+      # "bull" swing its horn to above, then uptrend symbol, "bear" swing its nail to below, then downtrend symbol.
+      psarbull = psarbear = Array.new length
+
+      bull = true
+      af = iaf
+      ep = low[0]
+      hp = high[0]
+      lp = low[0]
+      for i in [2..length]
+        reverse = false
+        if bull
+          psar[i] = psar[i - 1] + af * (hp - psar[i - 1])
+          if low[i] < psar[i]
+            bull = false
+            reverse = true
+            psar[i] = hp
+            lp = low[i]
+            af = iaf
+          if not reverse
+            if high[i] > hp
+              hp = high[i]
+              af = min(af + iaf, maxaf)
+            end
+            if low[i - 1] < psar[i]
+              psar[i] = low[i - 1]
+            end
+            if low[i - 2] < psar[i]
+              psar[i] = low[i - 2]
+            end
+          psarbull[i] = psar[i]
+        else
+          psar[i] = psar[i - 1] + af * (lp - psar[i - 1])
+          if high[i] > psar[i]
+            bull = true
+            reverse = true
+            psar[i] = lp
+            hp = high[i]
+            af = iaf
+          end
+          if not reverse
+            if low[i] < lp
+              lp = low[i]
+              af = min(af + iaf, maxaf)
+            end
+            if high[i - 1] > psar[i]
+              psar[i] = high[i - 1]
+            end
+            if high[i - 2] > psar[i]
+              psar[i] = high[i - 2]
+            end
+          end
+          psarbear[i] = psar[i]
+        end
+      end
+      return {"dates":dates, "high":high, "low":low, "close":close, "psar":psar, "psarbear":psarbear, "psarbull":psarbull}
     end
 
   end
 end
+
