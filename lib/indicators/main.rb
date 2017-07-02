@@ -31,6 +31,8 @@ module Indicators
         @params << Indicators::Helper.get_parameters(all_params, 0, 14)
         @params << Indicators::Helper.get_parameters(all_params, 1, 3)
         @params << Indicators::Helper.get_parameters(all_params, 2, 3)
+      when :psar
+        @params = Array.new
       end
 
       # This is a Securities gem hash.

@@ -16,6 +16,7 @@ require "indicators/calculations/macd.rb"
 # Leading Indicators
 require "indicators/calculations/rsi.rb"
 require "indicators/calculations/sto.rb"
+require "indicators/calculations/psar.rb"
 
 module Indicators
 end

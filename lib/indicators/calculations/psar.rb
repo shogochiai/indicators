@@ -60,10 +60,10 @@ module Indicators
       low = barsdata[:low]
       close = barsdata[:close]
       psar = close[0..close.length]
-
+      
       # "bull" swing its horn to above, then uptrend symbol, "bear" swing its nail to below, then downtrend symbol.
       psarbull = psarbear = Array.new length
-
+      
       bull = true
       af = iaf
       ep = low[0]
@@ -79,6 +79,7 @@ module Indicators
             psar[i] = hp
             lp = low[i]
             af = iaf
+          end
           if not reverse
             if high[i] > hp
               hp = high[i]
@@ -90,6 +91,7 @@ module Indicators
             if low[i - 2] < psar[i]
               psar[i] = low[i - 2]
             end
+          end
           psarbull[i] = psar[i]
         else
           psar[i] = psar[i - 1] + af * (lp - psar[i - 1])
