@@ -52,6 +52,7 @@ module Indicators
                   when :macd then Indicators::Macd.calculate(data, @params)
                   when :rsi then Indicators::Rsi.calculate(data, @params)
                   when :sto then Indicators::Sto.calculate(data, @params)
+                  when :psar then Indicators::Psar.calculate(data, @params)
 			          end
       return @output
     end

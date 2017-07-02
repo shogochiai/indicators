@@ -22,8 +22,7 @@ describe Indicators::Data do
 			it "is a hash" do
 				expect { 
                                     arr = []
-	                            item = {:date=>"2012-01-04",:open=>"410.00",:high=>"414.68", :low=>"409.28", :close=>"413.44", :volume=>"9286500", :adj_close=>"411.67"}
-                                    100.times { arr.push(item) }
+                                    100.times { arr.push({:date=>"2012-01-04",:open=>(2410.00+rand(100)),:high=>(2414.68+rand(100)), :low=>(2409.28+rand(100)), :close=>(2413.44+rand(100)), :volume=>"9286500", :adj_close=>(2411.67+rand(100))}) }
                                     Indicators::Data.new(arr)
                                 }.not_to raise_error
 			end
@@ -34,8 +33,7 @@ describe Indicators::Data do
 	describe ".calc" do
 		before :all do
                         arr = []
-	                item = {:date=>"2012-01-04",:open=>"410.00",:high=>"414.68", :low=>"409.28", :close=>"413.44", :volume=>"9286500", :adj_close=>"411.67"}
-                        100.times { arr.push(item) }
+                        100.times { arr.push({:date=>"2012-01-04",:open=>(2410.00+rand(100)),:high=>(2414.68+rand(100)), :low=>(2409.28+rand(100)), :close=>(2413.44+rand(100)), :volume=>"9286500", :adj_close=>(2411.67+rand(100))}) }
 			@my_data = Indicators::Data.new(arr)
 		end
 

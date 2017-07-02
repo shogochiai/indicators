@@ -70,8 +70,9 @@ module Indicators
       ep = low[0]
       hp = high[0]
       lp = low[0]
-      for i in [2..length]
+      for i in (2..length)
         reverse = false
+        puts "bull: #{bull}, reverse: #{reverse}, psar[i - 1]: #{psar[i - 1]}, af: #{af}, hp: #{hp}, lp: #{lp}, ep: #{ep}"
         if bull
           psar[i] = psar[i - 1] + af * (hp - psar[i - 1])
           if low[i] < psar[i]
@@ -84,7 +85,7 @@ module Indicators
           if not reverse
             if high[i] > hp
               hp = high[i]
-              af = min(af + iaf, maxaf)
+              af = [af + iaf, maxaf].min
             end
             if low[i - 1] < psar[i]
               psar[i] = low[i - 1]
@@ -106,7 +107,7 @@ module Indicators
           if not reverse
             if low[i] < lp
               lp = low[i]
-              af = min(af + iaf, maxaf)
+              af = [af + iaf, maxaf].min
             end
             if high[i - 1] > psar[i]
               psar[i] = high[i - 1]
