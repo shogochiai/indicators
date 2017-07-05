@@ -55,12 +55,14 @@ module Indicators
     # Returns: []
     def self.calculate data, parameters
       iaf, maxaf = parameters[0], parameters[1]
-      length = data.length
+puts data
+      length = data[:date].length
+      tail_index = length - 1
       dates = data[:date]
       high = data[:high]
       low = data[:low]
       close = data[:close]
-      psar = close[0..close.length]
+      psar = close[0..tail_index]
       
       # "bull" swing its horn to above, then uptrend symbol, "bear" swing its nail to below, then downtrend symbol.
       psarbull = psarbear = Array.new length
@@ -70,22 +72,33 @@ module Indicators
       ep = low[0]
       hp = high[0]
       lp = low[0]
-      for i in (2..length)
+      for i in (2..tail_index)
         reverse = false
+
+        # in bull trend, check psar is always lower than low
         if bull
+          # monotonically increase
           psar[i] = psar[i - 1] + af * (hp - psar[i - 1])
+
+          # "if reverse" flow
           if low[i] < psar[i]
-            bull = false
+            bull = !bull
             reverse = true
-            psar[i] = hp
+            psar[i] = lp
             lp = low[i]
             af = iaf
           end
+
+          # normal flow
           if not reverse
+
+            # update pramas
             if high[i] > hp
               hp = high[i]
               af = [af + iaf, maxaf].min
             end
+
+            # double check?
             if low[i - 1] < psar[i]
               psar[i] = low[i - 1]
             end
@@ -94,12 +107,15 @@ module Indicators
             end
           end
           psarbull[i] = psar[i]
+
+        # in bear trend, check psar is always higher than high
         else
-          psar[i] = psar[i - 1] + af * (lp - psar[i - 1])
+          # monotonically decrease
+          psar[i] = psar[i - 1] - af * (psar[i - 1] - lp)
           if high[i] > psar[i]
-            bull = true
+            bull = !bull
             reverse = true
-            psar[i] = lp
+            psar[i] = hp
             hp = high[i]
             af = iaf
           end

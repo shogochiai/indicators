@@ -32,12 +32,12 @@ describe Indicators::Data do
                             {
                                 :date=>(Date.today+i).to_s,
                                 :open=>(2000+rand(500)*(-1)**[0,1].sample),
-                                :high=>(2500+rand(500)*(-1)**[0,1].sample), 
-                                :low=>(1500+rand(500)*(-1)**[0,1].sample), 
-                                :close=>(2000+rand(500)*(-1)**[0,1].sample), 
-                                :volume=>"9286500", 
+                                :high=>(2500+rand(500)*(-1)**[0,1].sample),
+                                :low=>(1500+rand(500)*(-1)**[0,1].sample),
+                                :close=>(2000+rand(500)*(-1)**[0,1].sample),
+                                :volume=>"9286500",
                                 :adj_close=>2000+rand(500)*(-1)**[0,1].sample
-                            } 
+                            }
                         end
 			@my_data = Indicators::Data.new arr
 		end
