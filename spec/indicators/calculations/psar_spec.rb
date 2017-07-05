@@ -35,13 +35,29 @@ describe Indicators::Psar do
       res[:psarbear].first.should be_nil
       res[:psarbear].last.should_not be_nil
     end
-    it "should start with bull and end with bear" do
-    end
-    it "should start with bear and end with bull" do
-    end
     it "should be all bull except the last bear" do
+      data = {date:["2017-07-05", "2017-07-06","2017-07-07","2017-07-08","2017-07-09"],open:[10,20,30,40,10],high:[12,22,32,42,12],low:[8,18,28,38,8],close:[10,20,30,40,10],volume:[100,120,90,100,100],adj_close:[10,10,10,10,10]}
+      res = Indicators::Psar.calculate(data, [0.02, 0.2])
+      res[:psarbull].size.should be data[:date].size
+      res[:psarbull].first.should_not be_nil
+      res[:psarbull][1].should be > res[:psarbull][0]
+      res[:psarbull][2].should be > res[:psarbull][1]
+      res[:psarbull][3].should be > res[:psarbull][2]
+      res[:psarbull][4].should be_nil
+      res[:psarbear][4].should_not be_nil
+      res[:psarbear].size.should be data[:date].size
     end
     it "should be all bear except the last bull" do
+      data = {date:["2017-07-05", "2017-07-06","2017-07-07","2017-07-08","2017-07-09"],open:[50,40,30,20,50],high:[52,42,32,22,52],low:[48,38,28,18,48],close:[50,40,30,20,50],volume:[100,120,90,100,100],adj_close:[10,10,10,10,10]}
+      res = Indicators::Psar.calculate(data, [0.02, 0.2])
+      res[:psarbull].size.should be data[:date].size
+      res[:psarbull].first.should eq res[:close].first
+      res[:psarbear].size.should be data[:date].size
+      res[:psarbear][2].should be < res[:psarbear][1]
+      res[:psarbear][3].should be < res[:psarbear][2]
+      res[:psarbear][4].should be_nil
+      res[:psarbull][4].should_not be_nil
+      res[:psarbear].first.should be_nil
     end
   end
 end

@@ -79,7 +79,7 @@ module Indicators
         if bull
           # monotonically increase
           psar[i] = psar[i - 1] + af * (hp - psar[i - 1])
-          p "bull: psar[#{i}] = psar[#{i - 1}] + af * (hp - psar[#{i - 1}]):  #{psar[i]} = #{psar[i - 1]} + #{af} * (#{hp} - #{psar[i - 1]})"
+          #p "bull: psar[#{i}] = psar[#{i - 1}] + af * (hp - psar[#{i - 1}]):  #{psar[i]} = #{psar[i - 1]} + #{af} * (#{hp} - #{psar[i - 1]})"
 
           # "if reverse" flow
           if low[i] < psar[i]
@@ -107,7 +107,7 @@ module Indicators
         else
           # monotonically decrease
           psar[i] = psar[i - 1] - af * (psar[i - 1] - lp)
-          p "bear: psar[#{i}] = psar[#{i - 1}] - af * (psar[#{i - 1}] - lp):  #{psar[i]} = #{psar[i - 1]} - #{af} * (#{psar[i - 1]} - #{lp})"
+          #p "bear: psar[#{i}] = psar[#{i - 1}] - af * (psar[#{i - 1}] - lp):  #{psar[i]} = #{psar[i - 1]} - #{af} * (#{psar[i - 1]} - #{lp})"
           if high[i] > psar[i]
             bull = !bull
             reverse = true
