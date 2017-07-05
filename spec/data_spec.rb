@@ -20,10 +20,7 @@ describe Indicators::Data do
 				expect { Indicators::Data.new([1, 2, 3]) }.not_to raise_error
 			end
 			it "is a hash" do
-				expect { 
-                                    arr = Array.new(100).each_with_index.map { |x,i| {:date=>(Date.today+i).to_s,:open=>(2000+rand(500)*(-1)**[0,1].sample),:high=>(2500+rand(500)*(-1)**[0,1].sample), :low=>(1500+rand(500)*(-1)**[0,1].sample), :close=>(2000+rand(500)*(-1)**[0,1].sample), :volume=>"9286500", :adj_close=>2000+rand(500)*(-1)**[0,1].sample} }
-                                    Indicators::Data.new arr
-                                }.not_to raise_error
+                                expect { Indicators::Data.new([{:date => '2012-08-01', :open => 2000, :high=>2000, :low=>2000, :close=>2000, :volume=>20000}]) }.not_to raise_error
 			end
 
 		end
@@ -31,7 +28,17 @@ describe Indicators::Data do
 
 	describe ".calc" do
 		before :all do
-                        arr = Array.new(100).each_with_index.map { |x,i| {:date=>(Date.today+i).to_s,:open=>(2000+rand(500)*(-1)**[0,1].sample),:high=>(2500+rand(500)*(-1)**[0,1].sample), :low=>(1500+rand(500)*(-1)**[0,1].sample), :close=>(2000+rand(500)*(-1)**[0,1].sample), :volume=>"9286500", :adj_close=>2000+rand(500)*(-1)**[0,1].sample} }
+                        arr = Array.new(100).each_with_index.map do |x,i|
+                            {
+                                :date=>(Date.today+i).to_s,
+                                :open=>(2000+rand(500)*(-1)**[0,1].sample),
+                                :high=>(2500+rand(500)*(-1)**[0,1].sample), 
+                                :low=>(1500+rand(500)*(-1)**[0,1].sample), 
+                                :close=>(2000+rand(500)*(-1)**[0,1].sample), 
+                                :volume=>"9286500", 
+                                :adj_close=>2000+rand(500)*(-1)**[0,1].sample
+                            } 
+                        end
 			@my_data = Indicators::Data.new arr
 		end
 
