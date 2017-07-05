@@ -55,7 +55,6 @@ module Indicators
     # Returns: []
     def self.calculate data, parameters
       iaf, maxaf = parameters[0], parameters[1]
-puts data
       length = data[:date].length
       tail_index = length - 1
       dates = data[:date]
@@ -65,7 +64,7 @@ puts data
       psar = close[0..tail_index]
       
       # "bull" swing its horn to above, then uptrend symbol, "bear" swing its nail to below, then downtrend symbol.
-      psarbull = psarbear = Array.new length
+      psarbull, psarbear = Array.new(length), Array.new(length)
       
       bull = true
       af = iaf
@@ -133,7 +132,7 @@ puts data
           end
           psarbear[i] = psar[i]
         end
-        puts "i: #{i}, bull: #{bull}, reverse: #{reverse}, psar[i - 1]: #{psar[i - 1]}, psar[i]: #{psar[i]}, af: #{af}, hp: #{hp}, lp: #{lp}, ep: #{ep}"
+        # puts "i: #{i}, bull: #{bull}, reverse: #{reverse}, psar[i - 1]: #{psar[i - 1]}, psar[i]: #{psar[i]}, af: #{af}, hp: #{hp}, lp: #{lp}, ep: #{ep}"
       end
       return {"dates":dates, "high":high, "low":low, "close":close, "psar":psar, "psarbear":psarbear, "psarbull":psarbull}
     end
