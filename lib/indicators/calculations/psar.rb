@@ -61,48 +61,44 @@ module Indicators
       high = data[:high]
       low = data[:low]
       close = data[:close]
-      psar = close[0..tail_index]
       
       # "bull" swing its horn to above, then uptrend symbol, "bear" swing its nail to below, then downtrend symbol.
-      psarbull, psarbear = Array.new(length), Array.new(length)
+      psar, psarbull, psarbear = Array.new(length), Array.new(length), Array.new(length)
+      psar[0], psarbull[0] = close.first, close.first
       
       bull = true
       af = iaf
       ep = low[0]
       hp = high[0]
       lp = low[0]
-      for i in (2..tail_index)
+
+      for i in (1..tail_index)
         reverse = false
 
         # in bull trend, check psar is always lower than low
         if bull
           # monotonically increase
           psar[i] = psar[i - 1] + af * (hp - psar[i - 1])
+          p "bull: psar[#{i}] = psar[#{i - 1}] + af * (hp - psar[#{i - 1}]):  #{psar[i]} = #{psar[i - 1]} + #{af} * (#{hp} - #{psar[i - 1]})"
 
           # "if reverse" flow
           if low[i] < psar[i]
             bull = !bull
             reverse = true
             psar[i] = lp
+            psarbear[i] = psar[i]
             lp = low[i]
             af = iaf
+            next
           end
 
           # normal flow
           if not reverse
 
-            # update pramas
+            # update params
             if high[i] > hp
               hp = high[i]
               af = [af + iaf, maxaf].min
-            end
-
-            # double check?
-            if low[i - 1] < psar[i]
-              psar[i] = low[i - 1]
-            end
-            if low[i - 2] < psar[i]
-              psar[i] = low[i - 2]
             end
           end
           psarbull[i] = psar[i]
@@ -111,23 +107,20 @@ module Indicators
         else
           # monotonically decrease
           psar[i] = psar[i - 1] - af * (psar[i - 1] - lp)
+          p "bear: psar[#{i}] = psar[#{i - 1}] - af * (psar[#{i - 1}] - lp):  #{psar[i]} = #{psar[i - 1]} - #{af} * (#{psar[i - 1]} - #{lp})"
           if high[i] > psar[i]
             bull = !bull
             reverse = true
             psar[i] = hp
+            psarbull[i] = psar[i]
             hp = high[i]
             af = iaf
+            next
           end
           if not reverse
             if low[i] < lp
               lp = low[i]
               af = [af + iaf, maxaf].min
-            end
-            if high[i - 1] > psar[i]
-              psar[i] = high[i - 1]
-            end
-            if high[i - 2] > psar[i]
-              psar[i] = high[i - 2]
             end
           end
           psarbear[i] = psar[i]
